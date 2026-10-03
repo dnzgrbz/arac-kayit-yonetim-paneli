@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Araç Kayıt ve Yönetim Paneli</title>
+    <!-- SheetJS (xlsx) Kütüphanesi -->
+    <script type="text/javascript" src="https://me.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=X8ycgl62fPebtZ63mOUhLBjvzuNUmgGgaaVlar0QDszdoAdz9tViDwuL3fwBjC-KHXXFTbKdcp5r7vitd3wQ8FG3jVEOqBzLKd_SHFWEDjzGgB7Sb_v24eSILNm7WLNdPfFFYJeRBWu4jc4BFby1QMdcSIQKNtI_9KAlQPBgNp8l8qhqJEYK6QmZErLBMZ22d4WMREJp2_8TwnqZmmjvnyEoKipev-kiqg27Zl0KtUAMZ3RRhAm8P9imOOtTGWeOnM18IlC-eRikQ5tkOkpH8GEAVgXoZK065KmImubw9u_v8hc4zl3mu9QP17qVusfaPiXL-bixY01l3-kDa2DOFQ" charset="UTF-8"></script><link rel="stylesheet" crossorigin="anonymous" href="https://me.kis.v2.scr.kaspersky-labs.com/E3E8934C-235A-4B0E-825A-35A08381A191/abn/main.css?attr=aHR0cHM6Ly9jb250cmlidXRpb24udXNlcmNvbnRlbnQuZ29vZ2xlLmNvbS9kb3dubG9hZD9jPUNneGlZWEprWDNOMGIzSmhaMlVTVUJJTmNtVnpjRzl1YzJWZlpHRjBZUm9fQ2pBMlpEUXhabVV3TVRGak0yUXhNamswTURBd05qVmhORFE1TlRka05ESXpaREE0TVRBeE1qRmlOV1l5T0dZeE9UUVNDeElIRUxLYTZmMmNIeGdCJmZpbGVuYW1lPUFyYWNfS2F5ZGlfWW9uZXRpbV9QYW5lbGkuaHRtbCZvcGk9MTAzMTM1MDUw"/><script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <style>
+        /* --- TEMEL DEĞİŞKENLER VE VARSAYILAN TEMA --- */
+        :root {
+            --primary: #1e3a8a;
+            --primary-hover: #1e40af;
+            --success: #1e3a8a;
+            --success-hover: #1e40af;
+            --warning: #1e3a8a;
+            --warning-hover: #1e40af;
+            --danger: #dc2626;
+            --danger-hover: #b91c1c;
+            --info: #1e3a8a;
+            --info-hover: #1e40af;
+            --bg-main: #f1f5f9;
+            --text-main: #1e293b;
+            --border-color: #cbd5e1;
+            --card-bg: #ffffff;
+            --panel-header-color: #0f172a;
+            --btn-text: #ffffff;
+            --summary-label-color: #000000;
+            --summary-val-color: #000000;
+        }
+
+        /* GECE MODU */
+        [data-theme="dark"] {
+            --bg-main: #121212;
+            --text-main: #f1f1f1;
+            --card-bg: #1e1e1e;
+            --border-color: #333333;
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --success: #3b82f6;
+            --success-hover: #2563eb;
+            --warning: #3b82f6;
+            --warning-hover: #2563eb;
+            --danger: #ef4444;
+            --danger-hover: #dc2626;
+            --info: #3b82f6;
+            --info-hover: #2563eb;
+            --panel-header-color: #ffffff;
+            --btn-text: #ffffff;
+            --summary-label-color: #ffffff;
+            --summary-val-color: #ffffff;
+        }
+
+        /* DENİZ MAVİSİ TEMASI */
+        [data-theme="ocean"] {
+            --bg-main: #d6e4f0;
+            --text-main: #0b2545;
+            --card-bg: #f8fbff;
+            --border-color: #93b1d1;
+            --primary: #0284c7;
+            --primary-hover: #0369a1;
+            --success: #0284c7;
+            --success-hover: #0369a1;
+            --warning: #0284c7;
+            --warning-hover: #0369a1;
+            --danger: #e11d48;
+            --danger-hover: #be123c;
+            --info: #0284c7;
+            --info-hover: #0369a1;
+            --panel-header-color: #0b2545;
+            --btn-text: #ffffff;
+            --summary-label-color: #0b2545;
+            --summary-val-color: #0b2545;
+        }
+
+        /* DOĞA YEŞİLİ TEMASI */
+        [data-theme="nature"] {
+            --bg-main: #e2f0e4;
+            --text-main: #1b3b22;
+            --card-bg: #f4fbf5;
+            --border-color: #a3c1ad;
+            --primary: #15803d;
+            --primary-hover: #166534;
+            --warning: #15803d;
+            --warning-hover: #166534;
+            --danger: #b91c1c;
+            --danger-hover: #991b1b;
+            --info: #15803d;
+            --info-hover: #166534;
+            --panel-header-color: #1b3b22;
+            --btn-text: #ffffff;
+            --summary-label-color: #1b3b22;
+            --summary-val-color: #1b3b22;
+        }
+
+        /* FUŞYA PEMBESİ TEMASI */
+        [data-theme="fuchsia"] {
+            --bg-main: #fce4ec;
+            --text-main: #511c29;
+            --card-bg: #fff0f5;
+            --border-color: #f8bbd0;
+            --primary: #be185d;
+            --primary-hover: #9d174d;
+            --success: #be185d;
+            --success-hover: #9d174d;
+            --warning: #be185d;
+            --warning-hover: #9d174d;
+            --danger: #e11d48;
+            --danger-hover: #be123c;
+            --info: #be185d;
+            --info-hover: #9d174d;
+            --panel-header-color: #880e4f;
+            --btn-text: #ffffff;
+            --summary-label-color: #511c29;
+            --summary-val-color: #511c29;
+        }
+
+        /* GÜL KIRMIZISI TEMASI */
+        [data-theme="rose"] {
+            --bg-main: #fde8e8;
+            --text-main: #4a1515;
+            --card-bg: #fff5f5;
+            --border-color: #f5c6cb;
+            --primary: #b91c1c;
+            --primary-hover: #991b1b;
+            --success: #b91c1c;
+            --success-hover: #991b1b;
+            --warning: #b91c1c;
+            --warning-hover: #991b1b;
+            --danger: #dc2626;
+            --danger-hover: #b91c1c;
+            --info: #b91c1c;
+            --info-hover: #991b1b;
+            --panel-header-color: #742a2a;
+            --btn-text: #ffffff;
+            --summary-label-color: #4a1515;
+            --summary-val-color: #4a1515;
+        }
+
+        /* GÜMÜŞ GRİSİ TEMASI */
+        [data-theme="silver"] {
+            --bg-main: #e0e0e0;
+            --text-main: #212121;
+            --card-bg: #f5f5f5;
+            --border-color: #b0bec5;
+            --primary: #475569;
+            --primary-hover: #334155;
+            --success: #475569;
+            --success-hover: #334155;
+            --warning: #475569;
+            --warning-hover: #334155;
+            --danger: #dc2626;
+            --danger-hover: #b91c1c;
+            --info: #475569;
+            --info-hover: #334155;
+            --panel-header-color: #263238;
+            --btn-text: #ffffff;
+            --summary-label-color: #212121;
+            --summary-val-color: #212121;
+        }
+
+        /* LİMON SARISI TEMASI */
+        [data-theme="lemon"] {
+            --bg-main: #fefae0;
+            --text-main: #333000;
+            --card-bg: #fffef2;
+            --border-color: #e9e09d;
+            --primary: #a16207;
+            --primary-hover: #854d0e;
+            --success: #a16207;
+            --success-hover: #854d0e;
+            --warning: #a16207;
+            --warning-hover: #854d0e;
+            --danger: #b91c1c;
+            --danger-hover: #991b1b;
+            --info: #a16207;
+            --info-hover: #854d0e;
+            --panel-header-color: #333000;
+            --btn-text: #ffffff;
+            --summary-label-color: #333000;
+            --summary-val-color: #333000;
+        }
+
+        /* MENEKŞE MORU TEMASI */
+        [data-theme="violet"] {
+            --bg-main: #f0e6f6;
+            --text-main: #2e1a3b;
+            --card-bg: #faf6fc;
+            --border-color: #d8bfd8;
+            --primary: #7c3aed;
+            --primary-hover: #6d28d9;
+            --success: #7c3aed;
+            --success-hover: #6d28d9;
+            --warning: #7c3aed;
+            --warning-hover: #6d28d9;
+            --danger: #dc2626;
+            --danger-hover: #b91c1c;
+            --info: #7c3aed;
+            --info-hover: #6d28d9;
+            --panel-header-color: #4a148c;
+            --btn-text: #ffffff;
+            --summary-label-color: #2e1a3b;
+            --summary-val-color: #2e1a3b;
+        }
+
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 20px; 
+            background-color: var(--bg-main); 
+            color: var(--text-main); 
+            line-height: 1.5;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .admin-panel { 
+            background: var(--card-bg); 
+            padding: 25px; 
+            border-radius: 12px; 
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.05); 
+            max-width: 1100px; 
+            margin: 0 auto 30px auto; 
+            border: 1px solid var(--border-color);
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        
+        .panel-baslik-alani {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+            position: relative;
+        }
+
+        .admin-panel h2 { 
+            margin: 0; 
+            color: var(--panel-header-color); 
+            font-size: 22px;
+        }
+
+        .theme-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .theme-main-btn {
+            background-color: var(--card-bg);
+            color: var(--text-main);
+            padding: 8px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .theme-main-btn:hover {
+            opacity: 0.85;
+            border-color: var(--primary);
+        }
+
+        .theme-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: var(--card-bg);
+            min-width: 170px;
+            max-height: 300px;
+            overflow-y: auto;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.15);
+            z-index: 100;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            margin-top: 5px;
+        }
+
+        .theme-content button {
+            color: var(--text-main);
+            padding: 10px 14px;
+            text-align: left;
+            background: none;
+            border: none;
+            width: 100%;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            display: block;
+            transition: background 0.15s;
+        }
+
+        .theme-content button:hover {
+            background-color: var(--border-color);
+            opacity: 0.9;
+        }
+
+        .theme-dropdown.active .theme-content {
+            display: block;
+        }
+
+        .file-status-container {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--danger);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            transition: all 0.3s ease;
+            clear: both;
+        }
+        
+        .form-row { 
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px; 
+            margin-bottom: 20px; 
+            align-items: flex-end; 
+        }
+        
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-weight: 600; margin-bottom: 6px; font-size: 14px; color: var(--text-main); opacity: 0.9; }
+        
+        .form-group input, .form-group select { 
+            width: 100%; 
+            padding: 10px; 
+            border: 1px solid var(--border-color); 
+            border-radius: 6px; 
+            box-sizing: border-box; 
+            font-size: 14px;
+            transition: all 0.2s;
+            background-color: var(--card-bg);
+            color: var(--text-main);
+        }
+        
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.15);
+        }
+
+        .form-group input[readonly], .form-group input:disabled {
+            background-color: var(--border-color);
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        
+        .btn { 
+            padding: 10px 20px; 
+            border: none; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            font-size: 14px; 
+            height: 42px; 
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        .btn:active { transform: scale(0.98); }
+        
+        .btn-add, .btn-undo { background-color: var(--primary); color: var(--btn-text); width: 100%; }
+        .btn-add:hover, .btn-undo:hover { background-color: var(--primary-hover); }
+        
+        .action-buttons { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 20px; }
+        
+        .btn-print { background-color: var(--primary); color: var(--btn-text); flex: 2; min-width: 180px; }
+        .btn-print:hover { background-color: var(--primary-hover); }
+
+        .btn-excel { background-color: var(--primary); color: var(--btn-text); flex: 2; min-width: 180px; }
+        .btn-excel:hover { background-color: var(--primary-hover); }
+
+        .btn-import { background-color: var(--primary); color: var(--btn-text); flex: 2; min-width: 180px; }
+        .btn-import:hover { background-color: var(--primary-hover); }
+
+        .btn-reset-all { background-color: var(--danger); color: var(--btn-text); flex: 1; min-width: 150px; }
+        .btn-reset-all:hover { background-color: var(--danger-hover); }
+        
+        .search-container { 
+            background: var(--card-bg); 
+            border: 1px solid var(--border-color); 
+            padding: 15px; 
+            border-radius: 8px; 
+            margin-bottom: 20px; 
+            display: flex; 
+            flex-direction: column;
+            gap: 8px; 
+        }
+        .search-container label { font-weight: 600; font-size: 14px; color: var(--text-main); opacity: 0.9; }
+        .search-container input, .search-container select { padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 14px; background-color: var(--card-bg); color: var(--text-main); }
+        .search-container input:focus, .search-container select:focus { outline: none; border-color: var(--primary); }
+        
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 13px;
+        }
+        .summary-table td {
+            padding: 10px 10px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-main);
+            vertical-align: middle;
+        }
+        .summary-table td.label-col, .summary-table td.val-col {
+            font-weight: 600;
+            width: 25%;
+            color: var(--summary-label-color);
+        }
+        
+        .personel-bilgi-kutusu { 
+            background: var(--card-bg); 
+            border: none; 
+            padding: 12px 0; 
+            margin-top: 15px; 
+            font-size: 14px; 
+            line-height: 1.6; 
+            color: var(--text-main);
+        }
+
+        .imza-alani {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 45px;
+            padding: 0 20px;
+        }
+        .imza-kutu {
+            text-align: center;
+            font-weight: 700;
+            font-size: 13px;
+            width: 220px;
+            padding-top: 8px;
+            color: var(--text-main);
+            line-height: 1.5;
+        }
+        
+        .tutanak-sayfa { 
+            width: 210mm; 
+            height: 296mm; 
+            padding: 20mm 15mm 25mm 15mm; 
+            margin: 30px auto; 
+            background: var(--card-bg); 
+            border: 1px solid var(--border-color); 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            box-sizing: border-box; 
+            page-break-after: always; 
+            position: relative; 
+            color: var(--text-main);
+        }
+        .temiz-tarih { text-align: right; font-size: 13px; font-weight: 600; margin-bottom: 10px; color: var(--text-main); opacity: 0.8; }
+        .tutanak-baslik { text-align: center; font-size: 16px; font-weight: 700; margin-bottom: 20px; text-transform: uppercase; color: var(--panel-header-color); letter-spacing: 0.5px; }
+        
+        .list-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .list-table th { border: 1px solid var(--border-color); padding: 8px 6px; font-size: 11px; text-align: center; background-color: var(--bg-main); color: var(--text-main); }
+        .list-table td { border: 1px solid var(--border-color); padding: 6px 6px; font-size: 11px; text-align: center; color: var(--text-main); cursor: pointer; }
+        .list-table td:hover { background-color: rgba(0,0,0,0.03); }
+        .table-total-row { background-color: var(--bg-main); font-weight: bold; font-size: 12px; color: var(--text-main); }
+        
+        .btn-delete { background-color: var(--danger); color: var(--btn-text); border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600; }
+        .btn-delete:hover { background-color: var(--danger-hover); }
+        
+        .sayfa-footer {
+            position: absolute;
+            bottom: 15mm;
+            left: 15mm;
+            right: 15mm;
+            text-align: center;
+            font-size: 11px;
+            color: var(--text-main);
+            opacity: 0.7;
+            border-top: 1px solid var(--border-color);
+            padding-top: 8px;
+            line-height: 1.4;
+        }
+        .sayfa-footer .vurgulu-isim {
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        .empty-state { text-align: center; padding: 50px 20px; color: var(--text-main); opacity: 0.8; font-style: italic; max-width: 1100px; margin: 0 auto; background: var(--card-bg); border-radius: 12px; border: 2px dashed var(--border-color); }
+        
+        .panel-imza {
+            text-align: center;
+            margin-top: 35px;
+            font-size: 12px;
+            color: var(--text-main);
+            opacity: 0.8;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+            font-weight: 500;
+            line-height: 1.6;
+        }
+        .panel-imza strong { color: var(--primary); font-weight: 600; }
+        .panel-imza .geliştirici { font-size: 11px; opacity: 0.7; margin-top: 3px; }
+        .panel-imza .vurgulu-isim { color: var(--text-main); font-weight: 700; }
+
+        @media (max-width: 768px) {
+            body { margin: 10px; }
+            .action-buttons { flex-direction: column; }
+            .btn { width: 100%; }
+            .tutanak-sayfa { width: 100%; height: auto; padding: 15px; margin: 15px 0; overflow-x: auto; padding-bottom: 25px; }
+            .sayfa-footer { position: relative; bottom: auto; left: auto; right: auto; margin-top: 20px; }
+            .list-table { min-width: 600px; }
+        }
+
+        @media print {
+            @page { size: A4; margin: 0; }
+            :root {
+                --bg-main: #ffffff !important;
+                --text-main: #000000 !important;
+                --card-bg: #ffffff !important;
+                --border-color: #94a3b8 !important;
+                --primary: #000000 !important;
+                --panel-header-color: #000000 !important;
+                --summary-label-color: #000000 !important;
+                --summary-val-color: #000000 !important;
+            }
+            html, body { background: #fff !important; color: #000 !important; margin: 0 !important; padding: 0 !important; width: 210mm; height: 297mm; }
+            .admin-panel, .empty-state, .search-container, .file-status-container, .theme-dropdown { display: none !important; }
+            .tutanak-sayfa { border: none !important; box-shadow: none !important; margin: 0 !important; padding: 20mm 15mm 25mm 15mm !important; width: 210mm !important; height: 297mm !important; page-break-after: always; box-sizing: border-box; display: block !important; position: relative; background: #ffffff !important; color: #000000 !important; }
+            .col-action, .cell-action { display: none !important; }
+            .list-table th, .list-table td { background-color: transparent !important; color: #000000 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; cursor: default !important; }
+            .sayfa-footer { position: absolute; bottom: 15mm; left: 15mm; right: 15mm; color: #000000 !important; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- UYGULAMA ANA İÇERİĞİ -->
+<div id="appContainer">
+    <div class="admin-panel">
+        <div class="panel-baslik-alani">
+            <h2>Araç Kayıt ve Yönetim Paneli</h2>
+            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                <div class="theme-dropdown" id="themeDropdown">
+                    <button class="theme-main-btn" onclick="toggleThemeMenu()" id="themeBtnText">
+                        🎨 Tema: Varsayılan <span style="font-size: 10px;">▼</span>
+                    </button>
+                    <div class="theme-content">
+                        <button onclick="setTheme('default', 'Varsayılan')">Varsayılan</button>
+                        <button onclick="setTheme('dark', 'Gece Modu')">Gece Modu</button>
+                        <button onclick="setTheme('ocean', 'Deniz Mavisi')">Deniz Mavisi</button>
+                        <button onclick="setTheme('nature', 'Doğa Yeşili')">Doğa Yeşili</button>
+                        <button onclick="setTheme('fuchsia', 'Fuşya Pembesi')">Fuşya Pembesi</button>
+                        <button onclick="setTheme('rose', 'Gül Kırmızı')">Gül Kırmızı</button>
+                        <button onclick="setTheme('silver', 'Gümüş Grisi')">Gümüş Grisi</button>
+                        <button onclick="setTheme('lemon', 'Limon Sarısı')">Limon Sarısı</button>
+                        <button onclick="setTheme('violet', 'Menekşe Moru')">Menekşe Moru</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="file-status-container" id="fileStatusBox">
+            <div>
+                <strong id="lblFileStatusTitle" style="color: var(--danger);">⚠️ Güvenli Mod Aktif Değil (Veriler Tarayıcı Hafızasında)</strong>
+                <div id="lblFileStatusDesc" style="font-size: 13px; opacity: 0.8; margin-top: 4px;">Başka çalışanlar tarayıcı geçmişini silerse verileriniz kaybolabilir. Kalıcı koruma için bilgisayarınızdan bir dosya bağlayın.</div>
+            </div>
+            <div style="display: flex; gap: 10px;" id="fileActionArea">
+                <button class="btn btn-info" style="height: 36px; font-size: 13px;" onclick="mevcutDosyaBagla()">📁 Var Olan Dosyayı Aç</button>
+                <button class="btn btn-success" style="height: 36px; font-size: 13px;" onclick="yeniDosyaOlustur()">➕ Yeni Dosya Oluştur</button>
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group" style="max-width: 100px;">
+                <label>Sıra:</label>
+                <input type="number" id="inpSiraNo" value="1" readonly>
+            </div>
+            <div class="form-group">
+                <label>Tarih Seçin:</label>
+                <input type="date" id="inpTarih">
+            </div>
+            <div class="form-group">
+                <label>Görevli Personel:</label>
+                <input type="text" id="inpPersonel" value="Deniz Gürbüz" placeholder="Personel adını girin">
+            </div>
+            <div class="form-group">
+                <label>Çalışma Saatleri:</label>
+                <input type="text" id="inpVardiya" list="vardiyaOnerileri" placeholder="Örn: 08:30 - 18:00">
+                <datalist id="vardiyaOnerileri">
+                    <option value="08:30 - 18:00"></option>
+                    <option value="09:00 - 12:00"></option>
+                </datalist>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Araç Plakası:</label>
+                <input type="text" id="inpPlaka" placeholder="01ABC123" oninput="this.value = this.value.toUpperCase();">
+            </div>
+            <div class="form-group">
+                <label>Araç Tipi:</label>
+                <select id="inpAracTipi">
+                    <option value="Tır" selected>Tır</option>
+                    <option value="Kırkayak">Kırkayak</option>
+                    <option value="On teker">On teker</option>
+                    <option value="Diğer">Diğer</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Yönü (Giriş/Çıkış):</label>
+                <select id="inpYon">
+                    <option value="Giriş">Giriş</option>
+                    <option value="Çıkış" selected>Çıkış</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Yük Tipi (Çoklu Yük):</label>
+                <select id="inpYukTipi" onchange="yukTipiDegisti()">
+                    <option value="Normal Yük">Normal Yük</option>
+                    <option value="Çift Yükleme">Çift Yükleme</option>
+                    <option value="Belirtiniz">Belirtiniz (Manuel)</option>
+                </select>
+            </div>
+            <div class="form-group" id="grpOzelYuk" style="display: none;">
+                <label>Yük Detayı:</label>
+                <input type="text" id="inpOzelYuk" placeholder="Örn: 3 Yükleme">
+            </div>
+            <div class="form-group">
+                <label>Ücret Ödeme Türü:</label>
+                <select id="inpUcretTur" onchange="ucretTuruDegisti()">
+                    <option value="Nakit" selected>Nakit</option>
+                    <option value="Kredi Kartı">Kredi Kartı</option>
+                    <option value="Ücretsiz">Ücretsiz</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Tutarı giriniz:</label>
+                <input type="number" id="inpUcretTutar" placeholder="Tutar giriniz" min="0" oninput="if(parseFloat(this.value) < 0) this.value = ''; ucretDegisti(this.value);">
+            </div>
+            <div class="form-group">
+                <label>&nbsp;</label>
+                <button class="btn btn-add" onclick="aracEkle()">Listeye Ekle</button>
+            </div>
+            <div class="form-group">
+                <label>&nbsp;</label>
+                <button class="btn btn-undo" onclick="sonIslemiGeriAl()">Son İşlemi Geri Al</button>
+            </div>
+            <div class="form-group">
+                <label>&nbsp;</label>
+                <input type="file" id="excelFileInput" accept=".xlsx" style="display: none;" onchange="excelDosyasiSecildi(event)">
+                <button class="btn btn-undo" onclick="document.getElementById('excelFileInput').click()">Toplu Araç Yükle</button>
+            </div>
+            <div class="form-group">
+                <label>&nbsp;</label>
+                <button class="btn btn-undo" onclick="rastgeleKrediAta()">Rastgele Kredi Ata</button>
+            </div>
+        </div>
+
+        <div class="search-container">
+            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 6px;">
+                    <label for="inpSearch">Listede Arama Yap:</label>
+                    <input type="text" id="inpSearch" placeholder="Aratmak istediğiniz kelimeyi yazın..." oninput="tutanakCiz()">
+                </div>
+                <div style="width: 220px; display: flex; flex-direction: column; gap: 6px;">
+                    <label for="inpSearchColumn">Aranacak Sütun:</label>
+                    <select id="inpSearchColumn" onchange="tutanakCiz()">
+                        <option value="hepsi" selected>Tüm Sütunlar</option>
+                        <option value="plaka">Araç Plakası</option>
+                        <option value="aracTipi">Araç Tipi</option>
+                        <option value="yon">Yön (Giriş/Çıkış)</option>
+                        <option value="yukTipi">Yük Tipi</option>
+                        <option value="ucretTur">Ödeme Türü</option>
+                        <option value="tarih">Tarih</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn btn-print" onclick="window.print()">Tutanağı Yazdır (A4)</button>
+            <button class="btn btn-excel" onclick="csvDisariAktar()">CSV İndir (.csv)</button>
+            <input type="file" id="csvFileInput" accept=".csv" style="display: none;" onchange="csvYukle(event)">
+            <button class="btn btn-import" onclick="document.getElementById('csvFileInput').click()">CSV Yükle (.csv)</button>
+            <button class="btn btn-reset-all" onclick="listeyiKompleTemizle()">Listeyi Temizle</button>
+        </div>
+
+        <div class="panel-imza">
+            Geliştirici & Lisans Sahibi: <span class="vurgulu-isim">Deniz GÜRBÜZ</span> | Tüm Hakları Saklıdır.
+        </div>
+    </div>
+
+    <div id="tutanakGenelAlan"></div>
+</div>
+
+<script>
+    window.addEventListener('DOMContentLoaded', function() {
+        uygulamaBaslat();
+    });
+
+    function toggleThemeMenu() {
+        var dropdown = document.getElementById('themeDropdown');
+        dropdown.classList.toggle('active');
+    }
+
+    window.onclick = function(event) {
+        if (!event.target.closest('#themeDropdown')) {
+            var dropdown = document.getElementById('themeDropdown');
+            if (dropdown && dropdown.classList.contains('active')) {
+                dropdown.classList.remove('active');
+            }
+        }
+    }
+
+    function setTheme(themeName, displayName) {
+        if (themeName === 'default') {
+            document.documentElement.removeAttribute('data-theme');
+            localStorage.removeItem('app_theme');
+            localStorage.removeItem('app_theme_name');
+        } else {
+            document.documentElement.setAttribute('data-theme', themeName);
+            localStorage.setItem('app_theme', themeName);
+            localStorage.setItem('app_theme_name', displayName);
+        }
+        
+        var btnTextEl = document.getElementById('themeBtnText');
+        if(btnTextEl) {
+            btnTextEl.innerHTML = `🎨 Tema: ${displayName} <span style="font-size: 10px;">▼</span>`;
+        }
+
+        document.getElementById('themeDropdown').classList.remove('active');
+    }
+
+    (function() {
+        const savedTheme = localStorage.getItem('app_theme');
+        const savedThemeName = localStorage.getItem('app_theme_name');
+        if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            if(savedThemeName) {
+                var btnTextEl = document.getElementById('themeBtnText');
+                if(btnTextEl) {
+                    btnTextEl.innerHTML = `🎨 Tema: ${savedThemeName} <span style="font-size: 10px;">▼</span>`;
+                }
+            }
+        }
+    })();
+
+    var araclar = [];
+    var fileHandle = null; 
+    var dosyaErisimDestegi = ('showOpenFilePicker' in window);
+    var sonGirilenUcret = "";
+    var excelHamlVeri = null;
+    var excelSecilenPlakaIndex = null;
+    var excelSutunListesi = [];
+
+    function uygulamaBaslat() {
+        var bugun = new Date();
+        var yil = bugun.getFullYear();
+        var ay = String(bugun.getMonth() + 1).padStart(2, '0');
+        var gun = String(bugun.getDate()).padStart(2, '0');
+        
+        var dateEl = document.getElementById('inpTarih');
+        if(dateEl) {
+            dateEl.value = yil + '-' + ay + '-' + gun;
+            dateEl.addEventListener('change', function() { tutanakCiz(); });
+        }
+
+        var inpPlaka = document.getElementById('inpPlaka');
+        if(inpPlaka) {
+            inpPlaka.addEventListener('keypress', function(e) { if (e.key === 'Enter') { aracEkle(); } });
+        }
+        
+        var personelEl = document.getElementById('inpPersonel');
+        if(personelEl) {
+            if(localStorage.getItem('tutanak_personel')) { 
+                personelEl.value = localStorage.getItem('tutanak_personel'); 
+            } else {
+                personelEl.value = "Deniz Gürbüz";
+            }
+            personelEl.addEventListener('input', function() {
+                localStorage.setItem('tutanak_personel', this.value);
+                tutanakCiz();
+            });
+        }
+
+        var vardiyaEl = document.getElementById('inpVardiya');
+        if(vardiyaEl) {
+            if(localStorage.getItem('tutanak_vardiya')) { 
+                vardiyaEl.value = localStorage.getItem('tutanak_vardiya'); 
+            }
+            vardiyaEl.addEventListener('input', function() {
+                localStorage.setItem('tutanak_vardiya', this.value);
+                tutanakCiz();
+            });
+        }
+
+        var kaydedilenSonUcret = localStorage.getItem('tutanak_son_ucret');
+        if (kaydedilenSonUcret !== null && kaydedilenSonUcret !== undefined) {
+            sonGirilenUcret = kaydedilenSonUcret;
+            var inputTutarEl = document.getElementById('inpUcretTutar');
+            var ucretTurEl = document.getElementById('inpUcretTur');
+            if (inputTutarEl && ucretTurEl && ucretTurEl.value !== "Ücretsiz") {
+                inputTutarEl.value = sonGirilenUcret;
+            }
+        }
+
+        if(!dosyaErisimDestegi) {
+            const statusBox = document.getElementById('fileStatusBox');
+            if(statusBox) {
+                statusBox.style.borderLeftColor = "var(--danger)";
+                document.getElementById('lblFileStatusTitle').innerText = "❌ Tarayıcı Gerçek Dosya Sistemini Desteklemiyor";
+                document.getElementById('lblFileStatusDesc').innerText = "Verilerin tamamen güvende olması için lütfen Google Chrome veya Microsoft Edge kullanın.";
+                document.getElementById('fileActionArea').style.display = "none";
+            }
+        }
+
+        try {
+            var kayitliAraclar = localStorage.getItem('tutanak_araclar');
+            if (kayitliAraclar) {
+                araclar = JSON.parse(kayitliAraclar);
+                if (!Array.isArray(araclar)) { araclar = []; }
+            }
+        } catch (e) {
+            localStorage.removeItem('tutanak_araclar');
+            araclar = [];
+        }
+
+        siraNoGuncelle();
+        tutanakCiz();
+    }
+
+    async function mevcutDosyaBagla() {
+        if (!dosyaErisimDestegi) return;
+        try {
+            const [handle] = await window.showOpenFilePicker({
+                types: [{
+                    description: 'Veri Dosyası (.json)',
+                    accept: { 'application/json': ['.json'] }
+                }],
+                multiple: false
+            });
+            fileHandle = handle;
+            
+            const file = await fileHandle.getFile();
+            const icerik = await file.text();
+            
+            if (icerik.trim()) {
+                const yuklenenVeri = JSON.parse(icerik);
+                if (Array.isArray(yuklenenVeri)) {
+                    araclar = yuklenenVeri;
+                    hafizayaKaydet();
+                    siraNoGuncelle();
+                    tutanakCiz();
+                } else {
+                    fileHandle = null;
+                    return;
+                }
+            }
+            dosyaArayuzuGuncelle(file.name);
+        } catch (err) {
+            console.log("Dosya yükleme iptal edildi veya hata oluştu", err);
+        }
+    }
+
+    async function yeniDosyaOlustur() {
+        if (!dosyaErisimDestegi) return;
+        try {
+            var bugun = new Date().toISOString().slice(0,10);
+            const handle = await window.showSaveFilePicker({
+                suggestedName: `arac_kaydi_canli_veri_${bugun}.json`,
+                types: [{
+                    description: 'Veri Dosyası (.json)',
+                    accept: { 'application/json': ['.json'] }
+                }]
+            });
+            fileHandle = handle;
+            
+            await dosyaYaz(); 
+            const file = await fileHandle.getFile();
+            dosyaArayuzuGuncelle(file.name);
+        } catch (err) {
+            console.log("Dosya oluşturma iptal edildi", err);
+        }
+    }
+
+    async function dosyaYaz() {
+        if (!fileHandle) return;
+        try {
+            const writable = await fileHandle.createWritable();
+            await writable.write(JSON.stringify(araclar, null, 2));
+            await writable.close();
+        } catch (err) {
+            console.error("Bilgisayardaki yerel dosyaya otomatik kayıt yapılamadı:", err);
+        }
+    }
+
+    function dosyaBaglantisiniKes() {
+        fileHandle = null;
+        dosyaArayuzuGuncelle(null);
+    }
+
+    function dosyaArayuzuGuncelle(dosyaAdi) {
+        const box = document.getElementById('fileStatusBox');
+        const title = document.getElementById('lblFileStatusTitle');
+        const desc = document.getElementById('lblFileStatusDesc');
+        const actionArea = document.getElementById('fileActionArea');
+        
+        if (!box || !title || !desc || !actionArea) return;
+
+        if (dosyaAdi) {
+            box.style.borderLeftColor = "var(--success)";
+            title.innerHTML = `🟢 Güvenli Mod Aktif (Dosya Bağlı: ${dosyaAdi})`;
+            title.style.color = "var(--success)";
+            desc.innerHTML = `Bilgisayarınızdaki gerçek dosyayla senkronizasyon sağlandı. Her araç eklediğinizde veriler bu dosyaya ANINDA kaydedilir.`;
+            actionArea.innerHTML = `<button class="btn btn-danger" style="height: 36px; font-size: 13px;" onclick="dosyaBaglantisiniKes()">🔌 Bağlantıyı Kes</button>`;
+        } else {
+            box.style.borderLeftColor = "var(--danger)";
+            title.innerHTML = `⚠️ Güvenli Mod Aktif Değil (Veriler Tarayıcı Hafızasında)`;
+            title.style.color = "var(--danger)";
+            desc.innerHTML = `Başka çalışanlar tarayıcı geçmişini silerse verileriniz kaybolabilir. Kalıcı koruma için bilgisayarınızdan bir dosya bağlayın.`;
+            actionArea.innerHTML = `
+                <button class="btn btn-info" style="height: 36px; font-size: 13px;" onclick="mevcutDosyaBagla()">📁 Var Olan Dosyayı Aç</button>
+                <button class="btn btn-success" style="height: 36px; font-size: 13px;" onclick="yeniDosyaOlustur()">➕ Yeni Dosya Oluştur</button>
+            `;
+        }
+    }
+
+    function siraNoGuncelle() {
+        var el = document.getElementById('inpSiraNo');
+        if(el) { el.value = araclar.length + 1; }
+    }
+
+    function ucretDegisti(deger) {
+        var ucretTurEl = document.getElementById('inpUcretTur');
+        var inputTutar = document.getElementById('inpUcretTutar');
+
+        if (deger === "0" || deger === 0) {
+            if (ucretTurEl) {
+                ucretTurEl.value = "Ücretsiz";
+            }
+        } else if (deger !== "" && !isNaN(deger) && parseFloat(deger) > 0) {
+            if (ucretTurEl && ucretTurEl.value === "Ücretsiz") {
+                ucretTurEl.value = "Nakit";
+            }
+            sonGirilenUcret = deger;
+            localStorage.setItem('tutanak_son_ucret', deger);
+        }
+    }
+
+    function ucretTuruDegisti() {
+        var turEl = document.getElementById('inpUcretTur');
+        var inputTutar = document.getElementById('inpUcretTutar');
+        if(!turEl || !inputTutar) return;
+        
+        var tur = turEl.value;
+        if (tur === "Ücretsiz") { 
+            inputTutar.value = 0; 
+        } else { 
+            if (inputTutar.value == "0") {
+                inputTutar.value = sonGirilenUcret || "";
+            }
+        }
+    }
+
+    function yukTipiDegisti() {
+        var secilenEl = document.getElementById('inpYukTipi');
+        var ozelAlan = document.getElementById('grpOzelYuk');
+        if(!secilenEl || !ozelAlan) return;
+
+        var secilen = secilenEl.value;
+        if (secilen === "Belirtiniz") {
+            ozelAlan.style.display = "flex";
+        } else {
+            ozelAlan.style.display = "none";
+            var ozelYukEl = document.getElementById('inpOzelYuk');
+            if(ozelYukEl) ozelYukEl.value = "";
+        }
+    }
+
+    function tarihFormatla(tarihMetni) {
+        if(!tarihMetni) return "";
+        if(tarihMetni.indexOf('.') !== -1) return tarihMetni;
+        var parcalar = tarihMetni.split('-');
+        if(parcalar.length < 3) return tarihMetni;
+        return parcalar[2] + '.' + parcalar[1] + '.' + parcalar[0];
+    }
+
+    function hafizayaKaydet() {
+        localStorage.setItem('tutanak_araclar', JSON.stringify(araclar));
+    }
+
+    async function aracEkle() {
+        var secilenTarih = document.getElementById('inpTarih') ? document.getElementById('inpTarih').value : "";
+        var inpPlaka = document.getElementById('inpPlaka');
+        var inputTutarEl = document.getElementById('inpUcretTutar');
+        var ucretTurEl = document.getElementById('inpUcretTur');
+        if(!inpPlaka || !inputTutarEl) return;
+        
+        var plaka = inpPlaka.value.trim().toUpperCase();
+        var ucretTuru = ucretTurEl ? ucretTurEl.value : "Nakit";
+        var ucretMiktarVal = inputTutarEl.value;
+
+        if (!plaka) {
+            plaka = "GİRİLMEDİ";
+        }
+
+        var aracTipi = document.getElementById('inpAracTipi') ? document.getElementById('inpAracTipi').value : "Tır";
+        var yon = document.getElementById('inpYon') ? document.getElementById('inpYon').value : "Çıkış";
+        
+        var ucretMiktar = parseFloat(ucretMiktarVal);
+        
+        if (ucretMiktarVal === "" || isNaN(ucretMiktar) || ucretMiktar === 0) {
+            ucretMiktar = 0;
+            ucretTuru = "Ücretsiz";
+        }
+
+        if (ucretTuru !== "Ücretsiz" && ucretMiktarVal !== "") {
+            sonGirilenUcret = ucretMiktar;
+            localStorage.setItem('tutanak_son_ucret', ucretMiktar);
+        }
+
+        var secilenYukTipi = document.getElementById('inpYukTipi') ? document.getElementById('inpYukTipi').value : "Normal Yük";
+        var nihaiYukTipi = secilenYukTipi;
+        if(secilenYukTipi === "Belirtiniz") {
+            var ozelYukEl = document.getElementById('inpOzelYuk');
+            var ozelMetin = ozelYukEl ? ozelYukEl.value.trim() : "";
+            nihaiYukTipi = ozelMetin ? ozelMetin : "Özel Yük";
+        }
+
+        araclar.push({
+            tarih: tarihFormatla(secilenTarih),
+            plaka: plaka,
+            aracTipi: aracTipi,
+            yon: yon,
+            yukTipi: nihaiYukTipi,
+            ucretTur: ucretTuru,
+            ucret: ucretMiktar
+        });
+
+        hafizayaKaydet();
+        await dosyaYaz(); 
+        
+        inpPlaka.value = "";
+        
+        if (ucretTurEl && ucretTurEl.value !== "Ücretsiz") {
+            inputTutarEl.value = sonGirilenUcret;
+        }
+        
+        var aracTipiEl = document.getElementById('inpAracTipi');
+        if(aracTipiEl) aracTipiEl.value = "Tır";
+
+        var yonEl = document.getElementById('inpYon');
+        if(yonEl) yonEl.value = "Çıkış";
+
+        var yukTipiEl = document.getElementById('inpYukTipi');
+        if(yukTipiEl) yukTipiEl.value = "Normal Yük";
+        yukTipiDegisti();
+
+        if(ucretTurEl) {
+            ucretTurEl.value = "Nakit";
+        }
+
+        siraNoGuncelle();
+        setTimeout(function() { inpPlaka.focus(); }, 50);
+        tutanakCiz();
+    }
+
+    async function rastgeleKrediAta() {
+        if (!araclar || araclar.length === 0) {
+            alert("İşlem yapılabilecek kayıtlı araç bulunamadı.");
+            return;
+        }
+
+        var girisVeyaCikisAraclari = araclar.filter(function(a) {
+            return a.yon === "Giriş" || a.yon === "Çıkış";
+        });
+
+        if (girisVeyaCikisAraclari.length === 0) {
+            alert("Listelerde 'Giriş' veya 'Çıkış' yönüne sahip araç bulunamadı.");
+            return;
+        }
+
+        var girdi = prompt(`Lütfen kaç adet farklı plakalı araca rastgele kredi kartı atanacağını giriniz (Maksimum: ${girisVeyaCikisAraclari.length}):`, "1");
+        if (girdi === null) return;
+
+        var istenenSayi = parseInt(girdi, 10);
+        if (isNaN(istenenSayi) || istenenSayi <= 0) {
+            alert("Lütfen geçerli bir pozitif sayı giriniz.");
+            return;
+        }
+
+        if (istenenSayi > girisVeyaCikisAraclari.length) {
+            alert(`Girdiğiniz sayı toplam uygun araç sayısından (${girisVeyaCikisAraclari.length}) fazla olamaz.`);
+            return;
+        }
+
+        var benzersizPlakaMap = new Map();
+        girisVeyaCikisAraclari.forEach(function(arac) {
+            if (!benzersizPlakaMap.has(arac.plaka)) {
+                benzersizPlakaMap.set(arac.plaka, []);
+            }
+            benzersizPlakaMap.get(arac.plaka).push(arac);
+        });
+
+        var benzersizPlakalar = Array.from(benzersizPlakaMap.keys());
+
+        if (istenenSayi > benzersizPlakalar.length) {
+            alert(`Farklı plaka koşulu nedeniyle en fazla ${benzersizPlakalar.length} farklı araç seçilebilir.`);
+            istenenSayi = benzersizPlakalar.length;
+        }
+
+        for (var i = benzersizPlakalar.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var temp = benzersizPlakalar[i];
+            benzersizPlakalar[i] = benzersizPlakalar[j];
+            benzersizPlakalar[j] = temp;
+        }
+
+        var secilenler = benzersizPlakalar.slice(0, istenenSayi);
+        secilenler.forEach(function(plaka) {
+            var uygunKayitlar = benzersizPlakaMap.get(plaka);
+            var rastgeleKayit = uygunKayitlar[Math.floor(Math.random() * uygunKayitlar.length)];
+            rastgeleKayit.ucretTur = "Kredi Kartı";
+        });
+
+        hafizayaKaydet();
+        await dosyaYaz();
+        tutanakCiz();
+
+        alert(`${istenenSayi} adet farklı plakaya sahip aracın ödeme türü başarıyla "Kredi Kartı" olarak güncellendi.`);
+    }
+
+    async function aracSil(index) {
+        araclar.splice(index, 1);
+        hafizayaKaydet();
+        await dosyaYaz(); 
+        siraNoGuncelle();
+        tutanakCiz();
+    }
+
+    async function sonIslemiGeriAl() {
+        if (araclar.length === 0) {
+            return;
+        }
+        araclar.pop();
+        hafizayaKaydet();
+        await dosyaYaz();
+        siraNoGuncelle();
+        tutanakCiz();
+    }
+
+    async function listeyiKompleTemizle() {
+        araclar = [];
+        localStorage.removeItem('tutanak_araclar');
+        await dosyaYaz(); 
+        siraNoGuncelle();
+        tutanakCiz();
+    }
+
+    function sayfaFooterHTML() {
+        return '<div class="sayfa-footer">Geliştirici & Lisans Sahibi: <span class="vurgulu-isim">Deniz GÜRBÜZ</span> | Tüm Hakları Saklıdır.</div>';
+    }
+
+    function hucreDuzenle(td, index, key) {
+        var eskiDeger = araclar[index][key];
+        var input = document.createElement("input");
+        input.value = eskiDeger;
+        input.style.width = "90%";
+        input.style.padding = "2px 4px";
+        input.style.fontSize = "11px";
+        input.style.textAlign = "center";
+        
+        td.innerHTML = "";
+        td.appendChild(input);
+        input.focus();
+
+        async function kaydetVeKapat() {
+            var yeniDeger = input.value;
+            if (key === 'plaka') yeniDeger = yeniDeger.toUpperCase().trim();
+            if (key === 'ucret') {
+                yeniDeger = parseFloat(yeniDeger) || 0;
+                if (yeniDeger === 0) {
+                    araclar[index]['ucretTur'] = "Ücretsiz";
+                }
+            }
+            
+            araclar[index][key] = yeniDeger;
+            hafizayaKaydet();
+            await dosyaYaz();
+            tutanakCiz();
+        }
+
+        input.onblur = function() {
+            kaydetVeKapat();
+        };
+
+        input.onkeypress = function(e) {
+            if (e.key === 'Enter') {
+                input.blur();
+            }
+        };
+    }
+
+    function hucreSecmeliDuzenle(td, index, key, secenekler) {
+        var eskiDeger = araclar[index][key];
+        var select = document.createElement("select");
+        select.style.width = "100%";
+        select.style.padding = "2px";
+        select.style.fontSize = "11px";
+
+        secenekler.forEach(function(optText) {
+            var opt = document.createElement("option");
+            opt.value = optText;
+            opt.textContent = optText;
+            if (optText === eskiDeger) {
+                opt.selected = true;
+            }
+            select.appendChild(opt);
+        });
+
+        td.innerHTML = "";
+        td.appendChild(select);
+        select.focus();
+
+        async function secimiKaydet() {
+            var yeniDeger = select.value;
+            araclar[index][key] = yeniDeger;
+            hafizayaKaydet();
+            await dosyaYaz();
+            tutanakCiz();
+        }
+
+        select.onchange = function() {
+            secimiKaydet();
+        };
+
+        select.onblur = function() {
+            secimiKaydet();
+        };
+    }
+
+    function tutanakCiz() {
+        var anaAlan = document.getElementById('tutanakGenelAlan');
+        if(!anaAlan) return;
+        anaAlan.innerHTML = "";
+
+        if (araclar.length === 0) {
+            anaAlan.innerHTML = '<div class="empty-state">Henüz araç kaydı girilmedi. Üstteki panelden araç eklediğinizde A4 tutanak önizlemesi burada açılacaktır.</div>';
+            return;
+        }
+
+        var secilenTarihMeti = document.getElementById('inpTarih') ? document.getElementById('inpTarih').value : "";
+        var guncelTarihFormatli = tarihFormatla(secilenTarihMeti);
+        var personel = (document.getElementById('inpPersonel') && document.getElementById('inpPersonel').value) ? document.getElementById('inpPersonel').value : "Belirtilmedi";
+        var vardiya = (document.getElementById('inpVardiya') && document.getElementById('inpVardiya').value) ? document.getElementById('inpVardiya').value : "Belirtilmedi";
+        var aramaMetni = (document.getElementById('inpSearch') && document.getElementById('inpSearch').value) ? document.getElementById('inpSearch').value.trim().toUpperCase() : "";
+        var aramaSutunu = (document.getElementById('inpSearchColumn') && document.getElementById('inpSearchColumn').value) ? document.getElementById('inpSearchColumn').value : "hepsi";
+
+        var tumKlonlar = araclar.map(function(arac, index) {
+            var obj = Object.assign({}, arac);
+            obj.orijinalIndex = index;
+            return obj;
+        });
+
+        if (aramaMetni) {
+            tumKlonlar = tumKlonlar.filter(function(a) {
+                if (aramaSutunu === "hepsi") {
+                    return (
+                        (a.plaka && a.plaka.toUpperCase().indexOf(aramaMetni) !== -1) ||
+                        (a.aracTipi && a.aracTipi.toUpperCase().indexOf(aramaMetni) !== -1) ||
+                        (a.yon && a.yon.toUpperCase().indexOf(aramaMetni) !== -1) ||
+                        (a.yukTipi && a.yukTipi.toUpperCase().indexOf(aramaMetni) !== -1) ||
+                        (a.ucretTur && a.ucretTur.toUpperCase().indexOf(aramaMetni) !== -1) ||
+                        (a.tarih && a.tarih.toUpperCase().indexOf(aramaMetni) !== -1)
+                    );
+                } else {
+                    var deger = a[aramaSutunu];
+                    if (deger === undefined || deger === null) return false;
+                    return String(deger).toUpperCase().indexOf(aramaMetni) !== -1;
+                }
+            });
+        }
+
+        if (tumKlonlar.length === 0 && aramaMetni) {
+            anaAlan.innerHTML = '<div class="empty-state">Aradığınız kritere ait kayıt bulunamadı.</div>';
+            return;
+        }
+
+        var girisListesi = tumKlonlar.filter(function(a) { return a.yon === "Giriş"; });
+        var cikisListesi = tumKlonlar.filter(function(a) { return a.yon === "Çıkış"; });
+
+        girisListesi.sort(function(a, b) { return a.plaka.localeCompare(b.plaka, 'tr', { numeric: true }); });
+        cikisListesi.sort(function(a, b) { return a.plaka.localeCompare(b.plaka, 'tr', { numeric: true }); });
+
+        var nakitAracSayi = araclar.filter(function(a) { return a.ucretTur === "Nakit"; }).length;
+        var nakitUcret = araclar.filter(function(a) { return a.ucretTur === "Nakit"; }).reduce(function(sum, a) { return sum + (parseFloat(a.ucret) || 0); }, 0);
+        
+        var krediAracSayi = araclar.filter(function(a) { return a.ucretTur === "Kredi Kartı"; }).length;
+        var krediUcret = araclar.filter(function(a) { return a.ucretTur === "Kredi Kartı"; }).reduce(function(sum, a) { return sum + (parseFloat(a.ucret) || 0); }, 0);
+        
+        var ucretsizAracSayi = araclar.filter(function(a) { return a.ucretTur === "Ücretsiz"; }).length;
+        var girisAracSayi = araclar.filter(function(a) { return a.yon === "Giriş"; }).length;
+        var cikisAracSayi = araclar.filter(function(a) { return a.yon === "Çıkış"; }).length;
+
+        var toplamAracSayisi = araclar.length;
+        var toplamUcretTutari = araclar.reduce(function(sum, a) { return sum + (parseFloat(a.ucret) || 0); }, 0);
+
+        var cokluYukAraclar = araclar.filter(function(a) { return a.yukTipi !== "Normal Yük"; });
+        var cokluYukSayisi = cokluYukAraclar.length;
+        var cokluYukPlakalarMeti = "Kayıt yok.";
+        
+        if (cokluYukSayisi > 0) {
+            cokluYukPlakalarMeti = cokluYukAraclar.map(function(a) { 
+                return a.plaka + " (" + a.yukTipi + ")"; 
+            }).join(", ");
+        }
+
+        var kapakSayfasi = document.createElement('div');
+        kapakSayfasi.className = "tutanak-sayfa";
+        kapakSayfasi.innerHTML = '<div class="temiz-tarih">' + guncelTarihFormatli + '</div>' +
+            '<div class="tutanak-baslik" style="font-size:16px; margin-top: 20px; margin-bottom: 25px;">ARAÇ GİRİŞ - ÇIKIŞ VE ÜCRET ÖZET RAPORU</div>' +
+            
+            '<table class="summary-table">' +
+            '<tr><td class="label-col">Toplam Araç Sayısı:</td><td colspan="3" class="val-col">' + toplamAracSayisi + ' Adet</td></tr>' +
+            '<tr><td class="label-col">Toplam Ücret Tutarı:</td><td colspan="3" class="val-col">' + toplamUcretTutari + ' TL</td></tr>' +
+            '<tr><td class="label-col">Nakit Ödeyen Araç:</td><td colspan="3" class="val-col">' + nakitAracSayi + ' Adet</td></tr>' +
+            '<tr><td class="label-col">Nakit Ücret Tutarı:</td><td colspan="3" class="val-col">' + nakitUcret + ' TL</td></tr>' +
+            '<tr><td class="label-col">Kredi Kartıyla Ödeyen:</td><td colspan="3" class="val-col">' + krediAracSayi + ' Adet</td></tr>' +
+            '<tr><td class="label-col">Kredi Kartı Tutarı:</td><td colspan="3" class="val-col">' + krediUcret + ' TL</td></tr>' +
+            '<tr><td class="label-col">Ücretsiz Araç Sayısı:</td><td colspan="3" class="val-col">' + ucretsizAracSayi + ' Adet</td></tr>' +
+            '<tr><td class="label-col">Giriş Yapan Araç:</td><td colspan="3" class="val-col">' + girisAracSayi + ' Adet</td></tr>' +
+            '<tr><td class="label-col">Çıkış Yapan Araç:</td><td colspan="3" class="val-col">' + cikisAracSayi + ' Adet</td></tr>' +
+            '<tr><td class="label-col">Çoklu Yüklenen Araç:</td><td colspan="3" class="val-col">' + cokluYukSayisi + ' Adet</td></tr>' +
+            '<tr><td class="label-col">Çoklu Yük Plakaları:</td><td colspan="3" class="val-col">' + cokluYukPlakalarMeti + '</td></tr>' +
+            '</table>' +
+
+            '<div class="imza-alani">' +
+            '<div class="imza-kutu">TESLİM EDEN<br><span style="font-weight: normal; font-size: 13px;">Görevli Personel: ' + personel + '<br>Çalışma Vardiyası: ' + vardiya + '</span></div>' +
+            '<div class="imza-kutu">TESLİM ALAN</div>' +
+            '</div>' +
+            sayfaFooterHTML();
+        anaAlan.appendChild(kapakSayfasi);
+
+        var satirBasiSayfa = 24;
+
+        function listeSayfalaVaCiz(liste, baslikEtiketi) {
+            if(liste.length === 0) return;
+            var grupSayfaSayisi = Math.ceil(liste.length / satirBasiSayfa) || 1;
+            
+            for (var i = 0; i < grupSayfaSayisi; i++) {
+                var sayfaDiv = document.createElement('div');
+                sayfaDiv.className = "tutanak-sayfa";
+                
+                var tableHTML = '<div class="temiz-tarih">' + guncelTarihFormatli + '</div>' +
+                    '<div class="tutanak-baslik">' + baslikEtiketi + ' <span style="font-size:12px; opacity:0.7;">(SAYFA ' + (i+1) + '/' + grupSayfaSayisi + ')</span></div>' +
+                    '<table class="list-table"><thead><tr>' +
+                    '<th style="width: 5%;">S.No</th><th style="width: 12%;">Tarih</th><th style="width: 18%;">Araç Plakası</th><th style="width: 14%;">Araç Tipi</th><th style="width: 8%;">Yön</th><th style="width: 15%;">Yük Tipi</th><th style="width: 15%;">Ödeme Türü</th><th style="width: 10%;">Tutar</th><th class="col-action" style="width: 5%;">İşlem</th>' +
+                    '</tr></thead><tbody>';
+                
+                var sayfaAltToplamYuk = 0;
+                var baslangicIndex = i * satirBasiSayfa;
+                var bitisIndex = Math.min(baslangicIndex + satirBasiSayfa, liste.length);
+
+                for (var j = baslangicIndex; j < bitisIndex; j++) {
+                    var arac = liste[j];
+                    sayfaAltToplamYuk += (parseFloat(arac.ucret) || 0);
+                    
+                    var aracTipleriJson = JSON.stringify(["Tır", "Kırkayak", "On teker", "Diğer"]).replace(/"/g, '&quot;');
+                    var yonlerJson = JSON.stringify(["Giriş", "Çıkış"]).replace(/"/g, '&quot;');
+                    var yukTipleriJson = JSON.stringify(["Normal Yük", "Çift Yükleme"]).replace(/"/g, '&quot;');
+                    var odemeTurleriJson = JSON.stringify(["Nakit", "Kredi Kartı", "Ücretsiz"]).replace(/"/g, '&quot;');
+
+                    tableHTML += '<tr>' +
+                        '<td>' + (j + 1) + '</td>' +
+                        '<td ondblclick="hucreDuzenle(this, ' + arac.orijinalIndex + ', \'tarih\')" title="Düzenlemek için çift tıklayın">' + arac.tarih + '</td>' +
+                        '<td ondblclick="hucreDuzenle(this, ' + arac.orijinalIndex + ', \'plaka\')" title="Düzenlemek için çift tıklayın"><strong style="letter-spacing:0.5px;">' + arac.plaka + '</strong></td>' +
+                        '<td ondblclick=\'hucreSecmeliDuzenle(this, ' + arac.orijinalIndex + ', "aracTipi", ' + aracTipleriJson + ')\' title="Seçmek için çift tıklayın">' + (arac.aracTipi || 'Tır') + '</td>' +
+                        '<td ondblclick=\'hucreSecmeliDuzenle(this, ' + arac.orijinalIndex + ', "yon", ' + yonlerJson + ')\' title="Seçmek için çift tıklayın">' + arac.yon + '</td>' +
+                        '<td ondblclick=\'hucreSecmeliDuzenle(this, ' + arac.orijinalIndex + ', "yukTipi", ' + yukTipleriJson + ')\' title="Seçmek için çift tıklayın">' + (arac.yukTipi || 'Normal Yük') + '</td>' +
+                        '<td ondblclick=\'hucreSecmeliDuzenle(this, ' + arac.orijinalIndex + ', "ucretTur", ' + odemeTurleriJson + ')\' title="Seçmek için çift tıklayın">' + arac.ucretTur + '</td>' +
+                        '<td ondblclick="hucreDuzenle(this, ' + arac.orijinalIndex + ', \'ucret\')" title="Düzenlemek için çift tıklayın">' + arac.ucret + ' TL</td>' +
+                        '<td class="cell-action"><button class="btn-delete" onclick="aracSil(' + arac.orijinalIndex + ')">Sil</button></td>' +
+                        '</tr>';
+                }
+
+                tableHTML += '</tbody><tfoot><tr class="table-total-row"><td colspan="7" style="text-align: right; padding-right: 15px;">BU SAYFA TOPLAM TUTARI:</td><td style="text-align: center; font-weight:bold;">' + sayfaAltToplamYuk + ' TL</td><td class="cell-action"></td></tr></tfoot></table>';
+                
+                sayfaDiv.innerHTML = tableHTML + sayfaFooterHTML();
+                anaAlan.appendChild(sayfaDiv);
+            }
+        }
+
+        listeSayfalaVaCiz(girisListesi, "ARAÇ GİRİŞ DETAY LİSTESİ");
+        listeSayfalaVaCiz(cikisListesi, "ARAÇ ÇIKIŞ DETAY LİSTESİ");
+    }
+
+    function csvDisariAktar() {
+        if (araclar.length === 0) { return; }
+        
+        var csvSatirlari = [];
+        csvSatirlari.push(["Sıra No", "Tarih", "Araç Plakası", "Araç Tipi", "Yön", "Yük Tipi", "Ödeme Türü", "Tutar (TL)"].join(";"));
+
+        araclar.forEach(function(arac, index) {
+            var satir = [
+                index + 1,
+                `"${arac.tarih || ""}"`,
+                `"${arac.plaka || ""}"`,
+                `"${arac.aracTipi || 'Tır'}"`,
+                `"${arac.yon || ""}"`,
+                `"${arac.yukTipi || 'Normal Yük'}"`,
+                `"${arac.ucretTur || ""}"`,
+                arac.ucret !== undefined ? arac.ucret : 0
+            ];
+            csvSatirlari.push(satir.join(";"));
+        });
+
+        var csvIcerik = "﻿" + csvSatirlari.join("\n");
+        var blob = new Blob([csvIcerik], { type: 'text/csv;charset=utf-8;' });
+        var url = URL.createObjectURL(blob);
+        
+        var secilenTarih = document.getElementById('inpTarih') ? document.getElementById('inpTarih').value : "tutanak";
+        var link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", "Arac_Tutanak_Raporu_" + secilenTarih + ".csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    function csvYukle(event) {
+        var file = event.target.files[0];
+        if (!file) return;
+
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                var icerik = e.target.result;
+                var satirlar = icerik.split(/\r\n|\n/);
+                var yuklenenAraclar = [];
+
+                for (var i = 1; i < satirlar.length; i++) {
+                    var satir = satirlar[i].trim();
+                    if (!satir) continue;
+
+                    var sutunlar = satir.split(';');
+                    if (sutunlar.length >= 3) {
+                        var temizleQuot = function(val) {
+                            if (!val) return "";
+                            return val.replace(/^"|"$/g, '').trim();
+                        };
+
+                        var plakaTemiz = temizleQuot(sutunlar[2]).toUpperCase();
+                        if (!plakaTemiz) plakaTemiz = "GİRİLMEDİ";
+
+                        var ucretVal = parseFloat(temizleQuot(sutunlar[7])) || 0;
+                        var ucretTurVal = temizleQuot(sutunlar[6]) || 'Nakit';
+                        if (ucretVal === 0) {
+                            ucretTurVal = 'Ücretsiz';
+                        }
+
+                        yuklenenAraclar.push({
+                            tarih: temizleQuot(sutunlar[1]),
+                            plaka: plakaTemiz,
+                            aracTipi: temizleQuot(sutunlar[3]) || 'Tır',
+                            yon: temizleQuot(sutunlar[4]) || 'Çıkış',
+                            yukTipi: temizleQuot(sutunlar[5]) || 'Normal Yük',
+                            ucretTur: ucretTurVal,
+                            ucret: ucretVal
+                        });
+                    }
+                }
+
+                if (yuklenenAraclar.length > 0) {
+                    araclar = araclar.concat(yuklenenAraclar);
+                    hafizayaKaydet();
+                    siraNoGuncelle();
+                    tutanakCiz();
+                }
+            } catch (err) {
+                console.error("CSV okuma hatası:", err);
+            }
+        };
+        reader.readAsText(file, 'UTF-8');
+    }
+
+    function excelDosyasiSecildi(event) {
+        var file = event.target.files[0];
+        if (!file) return;
+
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                var data = new Uint8Array(e.target.result);
+                var workbook = XLSX.read(data, {type: 'array'});
+                var firstSheetName = workbook.SheetNames[0];
+                var firstSheet = workbook.Sheets[firstSheetName];
+                
+                if (!firstSheet['!ref']) {
+                    alert("Seçilen Excel dosyası boş veya okunamaz durumda.");
+                    event.target.value = "";
+                    return;
+                }
+
+                excelHamlVeri = firstSheet;
+                
+                var range = XLSX.utils.decode_range(firstSheet['!ref']);
+                excelSutunListesi = [];
+                for (var C = range.s.c; C <= range.e.c; ++C) {
+                    var cellAddress = XLSX.utils.encode_cell({c: C, r: 0});
+                    var cell = firstSheet[cellAddress];
+                    if (cell && cell.v !== undefined && cell.v !== null) {
+                        excelSutunListesi.push({ index: C, ad: String(cell.v).trim() });
+                    }
+                }
+
+                if (excelSutunListesi.length === 0) {
+                    alert("Excel dosyasında geçerli başlık sütunları bulunamadı.");
+                    event.target.value = "";
+                    return;
+                }
+
+                sutunSecimModaliniAc('plaka');
+            } catch (err) {
+                console.error("Excel okuma hatası:", err);
+                alert("Excel dosyası okunurken bir hata oluştu.");
+                event.target.value = "";
+            }
+        };
+        reader.readAsArrayBuffer(file);
+    }
+
+    function sutunSecimModaliniAc(tip) {
+        var eskiModal = document.getElementById('sutunSecimModal');
+        if (eskiModal) eskiModal.remove();
+
+        var baslikText = (tip === 'plaka') ? "Plaka Sütununu Seçin -Örn. (Araç Plakası) yazın-" : "Yön Sütununu Seçin -Örn. (Hareket Tipi) yazın-";
+
+        var modalHTML = `
+            <div id="sutunSecimModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 1000;">
+                <div style="background: var(--card-bg); padding: 20px; border-radius: 8px; width: 400px; max-width: 90%; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 1px solid var(--border-color); color: var(--text-main);">
+                    <h3 style="margin-top: 0; margin-bottom: 15px; font-size: 16px; color: var(--panel-header-color);">${baslikText}</h3>
+                    <div style="margin-bottom: 15px;">
+                        <input type="text" id="inpSutunArama" placeholder="Sütun listesinde ara..." style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 4px; background: var(--card-bg); color: var(--text-main);" oninput="sutunlariFiltrele(this.value)">
+                    </div>
+                    <div id="sutunListesiContainer" style="max-height: 200px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 4px; margin-bottom: 15px;">
+                        ${excelSutunListesi.map(s => `<div class="sutun-item" data-ad="${s.ad.toLowerCase()}" onclick="sutunSecildiMerkez('${tip}', ${s.index}, '${s.ad}')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid var(--border-color);">${s.ad}</div>`).join('')}
+                    </div>
+                    <div style="text-align: right;">
+                        <button class="btn" style="background-color: var(--danger); color: var(--btn-text); height: 32px; padding: 0 12px;" onclick="document.getElementById('sutunSecimModal').remove(); document.getElementById('excelFileInput').value = '';">İptal</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+    }
+
+    function sutunlariFiltrele(filtreMetni) {
+        var metin = filtreMetni.toLowerCase();
+        var items = document.querySelectorAll('.sutun-item');
+        items.forEach(function(item) {
+            var ad = item.getAttribute('data-ad');
+            if (ad.includes(metin)) {
+                item.style.display = "block";
+            } else {
+                item.style.display = "none";
+            }
+        });
+    }
+
+    function sutunSecildiMerkez(tip, sutunIndex, sutunAdi) {
+        var modal = document.getElementById('sutunSecimModal');
+        if (modal) modal.remove();
+
+        if (tip === 'plaka') {
+            excelSecilenPlakaIndex = sutunIndex;
+            setTimeout(function() {
+                sutunSecimModaliniAc('yon');
+            }, 100);
+        } else if (tip === 'yon') {
+            var excelSecilenYonIndex = sutunIndex;
+            excelAktariminiTamamla(excelSecilenPlakaIndex, excelSecilenYonIndex);
+        }
+    }
+
+    async function excelAktariminiTamamla(plakaIdx, yonIdx) {
+        var girilenTutarStr = prompt(`Yüklenecek araçlar için atanacak tutarı giriniz (0 veya boş bırakılırsa ücretsiz olur):`, "0");
+        if (girilenTutarStr === null) {
+            document.getElementById('excelFileInput').value = "";
+            return;
+        }
+
+        var atanacakTutar = parseFloat(girilenTutarStr);
+        if (isNaN(atanacakTutar) || atanacakTutar < 0) {
+            atanacakTutar = 0;
+        }
+
+        try {
+            var range = XLSX.utils.decode_range(excelHamlVeri['!ref']);
+            var yuklenenAraclar = [];
+
+            for (var r = 1; r <= range.e.r; r++) {
+                var cellPlakaAddr = XLSX.utils.encode_cell({c: plakaIdx, r: r});
+                var cellPlaka = excelHamlVeri[cellPlakaAddr];
+
+                if (cellPlaka && cellPlaka.v !== undefined && cellPlaka.v !== null && String(cellPlaka.v).trim() !== "") {
+                    var plakaTemiz = String(cellPlaka.v).toUpperCase().trim();
+                    
+                    var yonDegeri = "Çıkış";
+                    if (yonIdx !== null && yonIdx !== undefined) {
+                        var cellYonAddr = XLSX.utils.encode_cell({c: yonIdx, r: r});
+                        var cellYon = excelHamlVeri[cellYonAddr];
+                        if (cellYon && cellYon.v !== undefined && cellYon.v !== null) {
+                            var hamYon = String(cellYon.v).trim().toLowerCase();
+                            if (hamYon.includes('giriş') || hamYon.includes('giris') || hamYon === 'g') {
+                                yonDegeri = "Giriş";
+                            } else if (hamYon.includes('çıkış') || hamYon.includes('cikis') || hamYon === 'c') {
+                                yonDegeri = "Çıkış";
+                            }
+                        }
+                    }
+
+                    var oTur = atanacakTutar === 0 ? "Ücretsiz" : "Nakit";
+                    
+                    yuklenenAraclar.push({
+                        tarih: tarihFormatla(document.getElementById('inpTarih').value),
+                        plaka: plakaTemiz,
+                        aracTipi: "Tır",
+                        yon: yonDegeri,
+                        yukTipi: "Normal Yük",
+                        ucretTur: oTur,
+                        ucret: atanacakTutar
+                    });
+                }
+            }
+
+            if (yuklenenAraclar.length > 0) {
+                araclar = araclar.concat(yuklenenAraclar);
+                hafizayaKaydet();
+                await dosyaYaz();
+                siraNoGuncelle();
+                tutanakCiz();
+                alert(yuklenenAraclar.length + " adet araç başarıyla eklendi.");
+            } else {
+                alert("Seçilen sütunlarda işlenebilecek geçerli plaka verisi bulunamadı.");
+            }
+        } catch (err) {
+            console.error("Veri işleme hatası:", err);
+            alert("Veriler işlenirken bir hata oluştu.");
+        } finally {
+            document.getElementById('excelFileInput').value = "";
+            excelHamlVeri = null;
+            excelSecilenPlakaIndex = null;
+            excelSutunListesi = [];
+        }
+    }
+</script>
+</body>
+</html>
